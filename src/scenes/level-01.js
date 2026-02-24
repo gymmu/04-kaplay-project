@@ -4,20 +4,38 @@
  * @returns
  */
 export default function level01(k) {
+	let player = null;
+
 	return () => {
 		k.setGravity(1600);
 
-		const player = k.add([
-			k.rect(100, 100),
+		player = k.add([
+			k.rect(50, 50),
 			k.pos(100, 100),
-			k.area(),
+			k.area({ restitution: 0.2 }),
 			k.body(),
-			k.color(),
+			k.color(k.BLUE),
 			k.offscreen({ destroy: true }),
 			k.anchor("center"),
 			shoot(),
 			camCenter(),
 			controller(),
+			"player",
+		]);
+
+		k.add([
+			k.rect(50, 50),
+			k.pos(1000, 100),
+			k.area(),
+			k.body(),
+			k.color(k.RED),
+			k.offscreen({ destroy: false }),
+			k.anchor("center"),
+			hunt(),
+			"npc",
+			{
+				speed: 2,
+			},
 		]);
 
 		k.add([
@@ -75,6 +93,16 @@ export default function level01(k) {
 			gameObject.destroy();
 			proj.destroy();
 		});
+
+		k.onCollide("player", "npc", (p, n, col) => {
+			console.log(col);
+			if (col.normal.y < 0) {
+				n.destroy();
+				p.jump();
+			} else {
+				p.destroy();
+			}
+		});
 	};
 
 	function shoot() {
@@ -130,6 +158,24 @@ export default function level01(k) {
 				this.onKeyDown("a", () => {
 					this.moveBy(-10, 0);
 				});
+			},
+		};
+	}
+
+	function hunt() {
+		return {
+			id: "hunt",
+			update() {
+				const playerPos = player.pos;
+				const selfPos = this.pos;
+
+				if (Math.abs(playerPos.x - selfPos.x) > 400) return;
+
+				if (playerPos.x > selfPos.x) {
+					this.moveBy(this.speed, 0);
+				} else if (playerPos.x < selfPos.x) {
+					this.moveBy(-this.speed, 0);
+				}
 			},
 		};
 	}
