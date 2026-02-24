@@ -1,47 +1,18 @@
 import kaplay from "kaplay";
+import loadingScene from "./scenes/loading-scene.js";
+import level01 from "./scenes/level-01.js";
 
-const k = kaplay({
+export const k = kaplay({
 	height: 480,
 	width: 640,
 	canvas: document.getElementById("game-canvas"),
 	background: "#82b4b4",
 	global: false,
+	debug: true,
+	debugKey: "r",
 });
 
-k.setGravity(1600);
+k.scene("loading", loadingScene(k));
+k.scene("level-01", level01(k));
 
-const player = k.add([
-	k.rect(100, 100),
-	k.pos(100, 100),
-	k.area(),
-	k.body(),
-	k.color(),
-	k.offscreen({ destroy: true }),
-]);
-k.add([
-	k.rect(640, 20),
-	k.pos(0, 460),
-	k.color("green"),
-	k.area(),
-	k.body({ isStatic: true }),
-]);
-
-k.add([
-	k.rect(60, 200),
-	k.pos(580, 260),
-	k.color("green"),
-	k.area(),
-	k.body({ isStatic: true }),
-]);
-
-player.onKeyDown("d", () => {
-	player.moveBy(10, 0);
-});
-
-player.onKeyDown("a", () => {
-	player.moveBy(-10, 0);
-});
-
-player.onDestroy(() => {
-	alert("Game Over");
-});
+k.go("loading");
