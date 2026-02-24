@@ -20,6 +20,7 @@ export default function level01(k) {
 			shoot(),
 			camCenter(),
 			controller(),
+			scare(),
 			"player",
 		]);
 
@@ -32,6 +33,7 @@ export default function level01(k) {
 			k.offscreen({ destroy: false }),
 			k.anchor("center"),
 			hunt(),
+			fear(),
 			"npc",
 			{
 				speed: 2,
@@ -103,6 +105,11 @@ export default function level01(k) {
 				p.destroy();
 			}
 		});
+
+		k.on("shoot", "npc", (npc) => {
+			npc.jump();
+			console.log("Shot fired");
+		});
 	};
 
 	function shoot() {
@@ -122,6 +129,7 @@ export default function level01(k) {
 					"projectile",
 				]);
 				projectile.applyImpulse(k.vec2(speed, 0));
+				k.trigger("shoot", "npc");
 			},
 		};
 	}
@@ -176,6 +184,34 @@ export default function level01(k) {
 				} else if (playerPos.x < selfPos.x) {
 					this.moveBy(-this.speed, 0);
 				}
+			},
+		};
+	}
+
+	function scare() {
+		return {
+			id: "scare",
+			add() {
+				this.onKeyPress("enter", () => {
+					k.trigger("scare", "fearfull");
+					console.log("Scare enemies");
+				});
+			},
+		};
+	}
+
+	function fear() {
+		return {
+			id: "fear",
+			add() {
+				this.tag("fearfull");
+				this.on("scare", () => {
+					console.log("Running in fear");
+					this.speed = -Math.abs(this.speed);
+					k.wait(1, () => {
+						this.speed = Math.abs(this.speed);
+					});
+				});
 			},
 		};
 	}
