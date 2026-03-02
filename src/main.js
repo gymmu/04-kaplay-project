@@ -16,3 +16,5 @@ k.scene("loading", loadingScene(k));
 k.scene("level-01", level01(k));
 
 k.go("loading");
+
+export default k;

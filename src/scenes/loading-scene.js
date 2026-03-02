@@ -1,17 +1,15 @@
-/**
- *
- * @param {import("kaplay").KAPLAYCtxT} kaplay - Eine Instanz des Spiels in welches die Scene geladen werden soll
- */
-export default function loadingScene(kaplay) {
+import k from "../main";
+
+export default function loadingScene() {
 	return () => {
-		kaplay.add([
-			kaplay.text("Drücke die Leertaste um\ndas Spiel zu starten."),
-			kaplay.pos(kaplay.width() / 2, kaplay.height() / 2),
-			kaplay.anchor("center"),
+		k.add([
+			k.text("Drücke die Leertaste um\ndas Spiel zu starten."),
+			k.pos(k.width() / 2, k.height() / 2),
+			k.anchor("center"),
 		]);
 
-		kaplay.onKeyPress("space", () => {
-			kaplay.go("level-01");
+		k.onKeyPress("space", () => {
+			k.go("level-01");
 		});
 	};
 }
