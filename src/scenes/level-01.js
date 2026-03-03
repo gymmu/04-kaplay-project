@@ -8,12 +8,16 @@ import shoot from "../components/shoot";
 import k from "../main";
 
 /**
+ * @typedef {import("kaplay").GameObj} GameObj
+ */
+
+/**
  *
  * @param {import("kaplay").KAPLAYCtxT} k
  * @returns
  */
 export default function level01() {
-	let player = null;
+	let /** @type {GameObj} */ player = null;
 
 	return () => {
 		k.setGravity(1600);
@@ -26,6 +30,7 @@ export default function level01() {
 			k.color(k.BLUE),
 			k.offscreen({ destroy: true }),
 			k.anchor("center"),
+			k.health(1, 5),
 			shoot(),
 			camCenter(),
 			controller(),
@@ -33,6 +38,13 @@ export default function level01() {
 			jump(),
 			"player",
 		]);
+		player.on("hurt", () => {
+			console.log(player.hp);
+		});
+
+		player.on("death", () => {
+			player.destroy();
+		});
 
 		k.add([
 			k.rect(50, 50),
@@ -42,6 +54,7 @@ export default function level01() {
 			k.color(k.RED),
 			k.offscreen({ destroy: false }),
 			k.anchor("center"),
+			k.health(1, 1),
 			hunt(),
 			fear(),
 			"npc",

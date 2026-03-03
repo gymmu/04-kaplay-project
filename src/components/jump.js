@@ -1,8 +1,13 @@
 import k from "../main";
 
+/**
+ * @typedef {import("kaplay").GameObj} GameObj
+ */
+
 export default function jump() {
 	return {
 		id: "jump",
+		/** @this {GameObj} */
 		add() {
 			this.onKeyDown("space", () => {
 				if (this.isGrounded()) {
@@ -10,11 +15,12 @@ export default function jump() {
 				}
 			});
 			this.onCollide("npc", (npc, col) => {
+				// Player jumps ontop of npc
 				if (col.normal.y < 0) {
-					//npc.destroy();
+					npc.hp -= 1;
 					this.jump();
 				} else {
-					//this.destroy();
+					this.hp -= 1;
 				}
 			});
 		},
