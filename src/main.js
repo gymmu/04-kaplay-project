@@ -1,8 +1,8 @@
 import kaplay from "kaplay";
-import loadingScene from "./scenes/loading-scene.js";
-import level01 from "./scenes/level-01.js";
+import sc00 from "./scenes/sc-00";
+import sc01 from "./scenes/sc-01";
 
-export const k = kaplay({
+const k = kaplay({
 	height: 480,
 	width: 640,
 	canvas: document.getElementById("game-canvas"),
@@ -12,9 +12,9 @@ export const k = kaplay({
 	debugKey: "r",
 });
 
-k.scene("loading", loadingScene(k));
-k.scene("level-01", level01(k));
+k.scene("init", sc00);
+k.scene("lvl-01", sc01);
 
-k.go("loading");
+k.go("init");
 
 export default k;

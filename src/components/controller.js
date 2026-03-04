@@ -1,16 +1,25 @@
-import k from "../main";
+/**
+ * @typedef {import("kaplay").GameObj} GameObj
+ */
 
-export default function controller() {
+export default function controller(speed) {
 	return {
 		id: "controller",
-		add() {
-			this.onKeyDown("d", () => {
-				this.moveBy(10, 0);
-			});
 
-			this.onKeyDown("a", () => {
-				this.moveBy(-10, 0);
+		/** @this {GameObj} */
+		add() {
+			this.speed = speed;
+
+			this.onKeyDown("d", () => {
+				this.move(this.speed, 0);
 			});
+			this.onKeyDown("a", () => {
+				this.move(-this.speed, 0);
+			});
+		},
+
+		update() {
+			console.log(this.pos.y);
 		},
 	};
 }

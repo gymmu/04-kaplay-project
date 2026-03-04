@@ -11,11 +11,6 @@ import k from "../main";
  * @typedef {import("kaplay").GameObj} GameObj
  */
 
-/**
- *
- * @param {import("kaplay").KAPLAYCtxT} k
- * @returns
- */
 export default function level01() {
 	let /** @type {GameObj} */ player = null;
 
